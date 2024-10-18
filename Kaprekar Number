@@ -1,0 +1,48 @@
+#include <iostream>
+#include <cmath>
+using namespace std;
+
+string convertToBase(int num, int base) {
+    string result = "";
+    while (num > 0) {
+        int rem = num % base;
+        result = to_string(rem) + result;
+        num /= base;
+    }
+    return result;
+}
+
+bool isKaprekar(int n, int base) {
+    if (n == 0) return true;
+    
+    int square = n * n;
+    string squareBaseB = convertToBase(square, base);
+    string numBaseB = convertToBase(n, base);
+    
+    int len = numBaseB.size();
+    int sqLen = squareBaseB.size();
+    
+    string rightPart = squareBaseB.substr(sqLen - len);
+    string leftPart = sqLen > len ? squareBaseB.substr(0, sqLen - len) : "0";
+    
+    int rightVal = stoi(rightPart, 0, base);
+    int leftVal = stoi(leftPart, 0, base);
+    
+    return (leftVal + rightVal == n);
+}
+
+int main() {
+    int number, base;
+    cout << "Enter the number: ";
+    cin >> number;
+    cout << "Enter the base: ";
+    cin >> base;
+    
+    if (isKaprekar(number, base)) {
+        cout << number << " is a Kaprekar number in base " << base << endl;
+    } else {
+        cout << number << " is not a Kaprekar number in base " << base << endl;
+    }
+    
+    return 0;
+}
